@@ -17,7 +17,7 @@ const categorySchema = new mongoose.Schema(
     },
     image: String,
   },
-  { timeseries: true }
+  { timestamps: true }
 );
 
 // 2. Create a model

@@ -15,6 +15,7 @@ const categorySchema = new mongoose.Schema(
       type: String,
       lowercase: true,
     },
+    image: String,
   },
   { timeseries: true }
 );

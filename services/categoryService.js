@@ -1,5 +1,6 @@
 const slugify = require("slugify");
 const asyncHandler = require("express-async-handler");
+const ApiError = require("../utils/apiError");
 
 const Category = require("../models/categoryModel");
 
@@ -33,13 +34,13 @@ exports.getCategories = asyncHandler(async (req, res) => {
  * @route   GET /api/v1/categories/:id
  * @access  Public
  */
-exports.getCategory = asyncHandler(async (req, res) => {
+exports.getCategory = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   const category = await Category.findById(id);
 
   // Check if category exists
   if (!category) {
-    res.status(404).json({ message: `No category with this id: ${id}` });
+    return next(new ApiError(`No category with this id: ${id}`, 404));
   }
 
   res.status(200).json({ data: category });
@@ -50,7 +51,7 @@ exports.getCategory = asyncHandler(async (req, res) => {
  * @route   PUT /api/v1/categories/:id
  * @access  Private
  */
-exports.updateCategory = asyncHandler(async (req, res) => {
+exports.updateCategory = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   const name = req.body.name;
 
@@ -62,7 +63,7 @@ exports.updateCategory = asyncHandler(async (req, res) => {
 
   // Check if category exists
   if (!category) {
-    res.status(404).json({ message: `No category with this id: ${id}` });
+    return next(new ApiError(`No category with this id: ${id}`, 404));
   }
 
   res.status(200).json({ data: category });
@@ -73,14 +74,14 @@ exports.updateCategory = asyncHandler(async (req, res) => {
  * @route   DELETE /api/v1/categories/:id
  * @access  Private
  */
-exports.deleteCategory = asyncHandler(async (req, res) => {
+exports.deleteCategory = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
 
   const category = await Category.findByIdAndDelete({ _id: id });
 
   // Check if category exists
   if (!category) {
-    res.status(404).json({ message: `No category with this id: ${id}` });
+    return next(new ApiError(`No category with this id: ${id}`, 404));
   }
 
   res.status(204).send();

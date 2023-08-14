@@ -2,6 +2,10 @@ const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 
+// Error handler
+const ApiError = require("./utils/apiError");
+const globalError = require("./middlewares/errorMiddleware");
+
 // import routes
 const categoryRoute = require("./routes/categoryRoute");
 
@@ -23,6 +27,13 @@ if (process.env.NODE_ENV === "development") {
 
 // Mount routes
 app.use("/api/v1/categories", categoryRoute);
+
+app.all("*", (req, res, next) => {
+  next(new ApiError(`Can't find ${req.originalUrl} on this server`, 400));
+});
+
+// Global error handler middleware
+app.use(globalError);
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {

@@ -2,6 +2,9 @@ const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 
+// import routes
+const categoryRoute = require("./routes/categoryRoute");
+
 dotenv.config({ path: "./config.env" });
 const dbConnection = require("./config/database");
 
@@ -19,6 +22,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // Mount routes
+app.use("/api/v1/categories", categoryRoute);
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {

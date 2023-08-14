@@ -40,7 +40,7 @@ exports.getCategory = asyncHandler(async (req, res, next) => {
 
   // Check if category exists
   if (!category) {
-    return next(new ApiError(`No category with this id: ${id}`, 404));
+    return next(new ApiError(`No category with this id: ${id} !`, 404));
   }
 
   res.status(200).json({ data: category });
@@ -63,7 +63,7 @@ exports.updateCategory = asyncHandler(async (req, res, next) => {
 
   // Check if category exists
   if (!category) {
-    return next(new ApiError(`No category with this id: ${id}`, 404));
+    return next(new ApiError(`No category with this id: ${id} !`, 404));
   }
 
   res.status(200).json({ data: category });
@@ -81,7 +81,7 @@ exports.deleteCategory = asyncHandler(async (req, res, next) => {
 
   // Check if category exists
   if (!category) {
-    return next(new ApiError(`No category with this id: ${id}`, 404));
+    return next(new ApiError(`No category with this id: ${id} !`, 404));
   }
 
   res.status(204).send();

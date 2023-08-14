@@ -8,13 +8,15 @@ const {
   deleteCategory,
 } = require("../services/categoryService");
 
+const { getCategoryValidator } = require("../validators/categoryValidator");
+
 const router = express.Router();
 
 router.route("/").post(createCategory).get(getCategories);
 
 router
   .route("/:id")
-  .get(getCategory)
+  .get(getCategoryValidator, getCategory)
   .put(updateCategory)
   .delete(deleteCategory);
 

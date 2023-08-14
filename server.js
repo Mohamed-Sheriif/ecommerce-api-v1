@@ -29,7 +29,7 @@ if (process.env.NODE_ENV === "development") {
 app.use("/api/v1/categories", categoryRoute);
 
 app.all("*", (req, res, next) => {
-  next(new ApiError(`Can't find ${req.originalUrl} on this server`, 400));
+  next(new ApiError(`Can't find ${req.originalUrl} on this server!`, 400));
 });
 
 // Global error handler middleware
@@ -42,9 +42,9 @@ const server = app.listen(PORT, () => {
 
 // Handle rejection outside express
 process.on("unhandledRejection", (err) => {
-  console.error(`UnhandledRejection Error: ${err.name} | ${err.message}`);
+  console.error(`UnhandledRejection Error: ${err.name} | ${err.message}!`);
   server.close(() => {
-    console.error("Server closed");
+    console.error("Server closed!");
     process.exit(1);
   });
 });

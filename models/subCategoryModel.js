@@ -5,7 +5,7 @@ const subCategorySchema = new mongoose.Schema(
     name: {
       type: String,
       trim: true,
-      unique: [ture, "SubCategory name must be unique"],
+      unique: [true, "SubCategory name must be unique"],
       required: [true, "SubCategory name is required"],
       minlength: [2, "Too short subCategory name"],
       maxlength: [32, "Too long subCategory name"],

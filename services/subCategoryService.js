@@ -33,7 +33,10 @@ exports.getSubCategories = asyncHandler(async (req, res, next) => {
   const limit = req.query.limit * 1 || 2;
   const skip = (page - 1) * limit;
 
-  const subCategories = await SubCategory.find({}).skip(skip).limit(limit);
+  const subCategories = await SubCategory.find({})
+    .skip(skip)
+    .limit(limit)
+    .populate({ path: "category", select: "name -_id" });
 
   res
     .status(200)
@@ -55,4 +58,49 @@ exports.getSubCategory = asyncHandler(async (req, res, next) => {
   }
 
   res.status(200).json({ data: subCategory });
+});
+
+/**
+ * @desc    Update specific subCategory by id
+ * @route   PUT /api/v1/subCategories/:id
+ * @access  Private
+ */
+exports.updateSubCategory = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+  const { name, category } = req.body;
+
+  const subCategory = await SubCategory.findByIdAndUpdate(
+    { _id: id },
+    {
+      name,
+      slug: slugify(name),
+      category,
+    },
+    { new: true }
+  );
+
+  // Check if subCategory exists
+  if (!subCategory) {
+    return next(new ApiError(`No subCategory with this id: ${id} !`, 404));
+  }
+
+  res.status(200).json({ data: subCategory });
+});
+
+/**
+ * @desc    Delete specific subCategory by id
+ * @route   DELETE /api/v1/subCategories/:id
+ * @access  Private
+ */
+exports.deleteSubCategory = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+
+  const subCategory = await SubCategory.findByIdAndDelete(id);
+
+  // Check if subCategory exists
+  if (!subCategory) {
+    return next(new ApiError(`No subCategory with this id: ${id} !`, 404));
+  }
+
+  res.status(204).send();
 });

@@ -26,6 +26,8 @@ exports.getCategories = asyncHandler(async (req, res) => {
   const limit = req.query.limit * 1 || 2;
   const skip = (page - 1) * limit;
   const categories = await Category.find({}).skip(skip).limit(limit);
+
+  res.status(200).json({ result: categories.length, page, data: categories });
 });
 
 /**

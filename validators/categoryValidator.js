@@ -22,11 +22,26 @@ exports.createCategoryValidator = [
 ];
 
 exports.updateCategoryValidator = [
-  check("id").isMongoId().withMessage("Invalid category id format!"),
+  check("id")
+    .notEmpty()
+    .withMessage("Category id is required!")
+    .isMongoId()
+    .withMessage("Invalid category id format!"),
+  check("name")
+    .notEmpty()
+    .withMessage("Category name is required!")
+    .isLength({ min: 2 })
+    .withMessage("Too short category name!")
+    .isLength({ max: 32 })
+    .withMessage("Too long category name!"),
   validatorMiddleware,
 ];
 
 exports.deleteCategoryValidator = [
-  check("id").isMongoId().withMessage("Invalid category id format!"),
+  check("id")
+    .notEmpty()
+    .withMessage("Category id is required!")
+    .isMongoId()
+    .withMessage("Invalid Category id format!"),
   validatorMiddleware,
 ];

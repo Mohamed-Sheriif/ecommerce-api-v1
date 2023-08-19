@@ -15,7 +15,9 @@ const {
   deleteSubCategoryValidator,
 } = require("../validators/subCategoryValidator");
 
-const router = express.Router();
+// MergeParams: true is required to access params in other routes
+// ex: we need to access categoryId from category route
+const router = express.Router({ mergeParams: true });
 
 router
   .route("/")

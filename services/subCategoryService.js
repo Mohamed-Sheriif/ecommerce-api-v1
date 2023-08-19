@@ -4,6 +4,13 @@ const ApiError = require("../utils/apiError");
 
 const SubCategory = require("../models/subCategoryModel");
 
+// Middleware to add category to req.body
+exports.setCategoryToBody = (req, res, next) => {
+  // Nested route
+  if (req.params.categoryId) req.body.category = req.params.categoryId;
+  next();
+};
+
 /**
  * @desc    Create a subCategory
  * @route   POST /api/v1/subCategories
@@ -23,6 +30,15 @@ exports.createSubCategory = asyncHandler(async (req, res, next) => {
   });
 });
 
+// Nested route
+exports.createFilterObject = (req, res, next) => {
+  // Check for get subCategories for a category
+  let filterObject = {};
+  if (req.params.categoryId) filterObject = { category: req.params.categoryId };
+  req.filterObj = filterObject;
+  next();
+};
+
 /**
  * @desc    Get list of subCategories
  * @route   GET /api/v1/subCategories
@@ -33,11 +49,7 @@ exports.getSubCategories = asyncHandler(async (req, res, next) => {
   const limit = req.query.limit * 1 || 2;
   const skip = (page - 1) * limit;
 
-  // Check for get subCategories for a category
-  let filterObj = {};
-  if (req.params.categoryId) filterObj = { category: req.params.categoryId };
-
-  const subCategories = await SubCategory.find(filterObj)
+  const subCategories = await SubCategory.find(req.filterObj)
     .skip(skip)
     .limit(limit)
     .populate({ path: "category", select: "name -_id" });

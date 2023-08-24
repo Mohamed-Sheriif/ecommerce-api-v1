@@ -23,7 +23,7 @@ exports.createProduct = asyncHandler(async (req, res) => {
  */
 exports.getProducts = asyncHandler(async (req, res) => {
   const page = req.query.page * 1 || 1;
-  const limit = req.query.limit * 1 || 2;
+  const limit = req.query.limit * 1 || 10;
   const skip = (page - 1) * limit;
 
   const products = await Product.find({}).skip(skip).limit(limit).populate({

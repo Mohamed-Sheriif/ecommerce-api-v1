@@ -46,7 +46,7 @@ exports.createFilterObject = (req, res, next) => {
  */
 exports.getSubCategories = asyncHandler(async (req, res, next) => {
   const page = req.query.page * 1 || 1;
-  const limit = req.query.limit * 1 || 2;
+  const limit = req.query.limit * 1 || 10;
   const skip = (page - 1) * limit;
 
   const subCategories = await SubCategory.find(req.filterObj)

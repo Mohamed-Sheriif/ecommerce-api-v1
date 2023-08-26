@@ -1,6 +1,7 @@
 const slugify = require("slugify");
 const asyncHandler = require("express-async-handler");
 const ApiError = require("../utils/apiError");
+const ApiFeature = require("../utils/ApiFeature");
 
 const Product = require("../models/productModel");
 
@@ -22,46 +23,25 @@ exports.createProduct = asyncHandler(async (req, res) => {
  * @access  Public
  */
 exports.getProducts = asyncHandler(async (req, res) => {
-  // Pagination
-  const page = req.query.page * 1 || 1;
-  const limit = req.query.limit * 1 || 10;
-  const skip = (page - 1) * limit;
-
-  // Filtering
-  const queryStringObj = { ...req.query };
-  const excludeFields = ["page", "limit", "sort", "fields"];
-  excludeFields.forEach((field) => delete queryStringObj[field]);
-
-  // if query contain gte, gt, lte, lt add $ sign
-  const queryStr = JSON.stringify(queryStringObj);
-  const queryStrWithDollarSign = queryStr.replace(
-    /\b(gte|gt|lte|lt)\b/g,
-    (match) => `$${match}`
-  );
+  // Get number of total documents
+  const totalDocuments = await Product.countDocuments();
 
   // Build query
-  let mongooseQuery = Product.find(JSON.parse(queryStrWithDollarSign))
-    .skip(skip)
-    .limit(limit)
-    .populate({
-      path: "category",
-      select: "name -_id",
-    });
+  const apiFeature = new ApiFeature(Product.find(), req.query)
+    .paginate(totalDocuments)
+    .filter()
+    .limitFields()
+    .search("product")
+    .sort();
 
-  // Sorting
-  if (req.query.sort) {
-    // if query contain sort, add space between them
-    const sortBy = req.query.sort.split(",").join(" ");
-    mongooseQuery = mongooseQuery.sort(sortBy);
-  } else {
-    // Default sorting by latest
-    mongooseQuery = mongooseQuery.sort("-createdAt");
-  }
+  const { paginationResult, mongooseQuery } = apiFeature;
 
   // Execute query
   const products = await mongooseQuery;
 
-  res.status(200).json({ result: products.length, page, data: products });
+  res
+    .status(200)
+    .json({ result: products.length, paginationResult, data: products });
 });
 
 /**

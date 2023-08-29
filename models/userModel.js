@@ -17,8 +17,10 @@ const userSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
     },
+
     phone: String,
     profileImage: String,
+
     password: {
       type: String,
       required: [true, "Please enter your password!"],
@@ -28,6 +30,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ["user", "admin"],
       default: "user",
+    },
+    active: {
+      type: Boolean,
+      default: true,
     },
   },
   { timestamps: true }

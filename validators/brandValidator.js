@@ -33,8 +33,7 @@ exports.updateBrandValidator = [
     .isMongoId()
     .withMessage("Invalid brand id format!"),
   check("name")
-    .notEmpty()
-    .withMessage("Brand name is required!")
+    .optional()
     .isLength({ min: 2 })
     .withMessage("Too short brand name!")
     .isLength({ max: 32 })

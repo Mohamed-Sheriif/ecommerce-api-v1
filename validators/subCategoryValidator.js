@@ -38,8 +38,7 @@ exports.updateSubCategoryValidator = [
     .isMongoId()
     .withMessage("Invalid subCategory id format!"),
   check("name")
-    .notEmpty()
-    .withMessage("SubCategory name is required!")
+    .optional()
     .isLength({ min: 2 })
     .withMessage("Too short subCategory name!")
     .isLength({ max: 32 })

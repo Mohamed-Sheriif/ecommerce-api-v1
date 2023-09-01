@@ -72,6 +72,23 @@ exports.updateUserValidator = [
       req.body.slug = slugify(value);
       return true;
     }),
+  check("email")
+    .notEmpty()
+    .withMessage("User email is required!")
+    .isEmail()
+    .withMessage("Invalid email format!")
+    .custom(async (value) => {
+      const user = await User.findOne({ email: value });
+
+      if (user) {
+        throw new Error("Email already exists!");
+      }
+    }),
+  check("profileImage").optional(),
+  check("phone")
+    .optional()
+    .isMobilePhone(["ar-EG", "ar-SA"])
+    .withMessage("Invalid phone number, only accept EG and SA phone numbers!"),
   validatorMiddleware,
 ];
 

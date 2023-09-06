@@ -52,9 +52,12 @@ exports.login = asyncHandler(async (req, res, next) => {
   // 2) Generate token
   const token = createToken(user);
 
-  res.status(200).json({ data: { user, token } });
+  res.status(200).json({ data: user, token });
 });
 
+/**
+ * @desc    Make sure user is logged in
+ */
 exports.protect = asyncHandler(async (req, res, next) => {
   // 1) Check if token exist
   let token;
@@ -107,3 +110,17 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
   next();
 });
+
+/**
+ * @desc    Check if user is allowed to do this action
+ */
+exports.allowedTo = (...rules) =>
+  asyncHandler(async (req, res, next) => {
+    // 1) access rules
+    // 2) access logged in user (req.user)
+    if (!rules.includes(req.user.role)) {
+      return next(new ApiError("You are not allowed to do this action!", 403));
+    }
+
+    next();
+  });

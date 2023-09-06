@@ -17,17 +17,38 @@ const {
   deleteBrandValidator,
 } = require("../validators/brandValidator");
 
+const AuthService = require("../services/authService");
+
 const router = express.Router();
 
 router
   .route("/")
-  .post(uploadBrandImage, resizeBrandImage, createBrandValidator, createBrand)
+  .post(
+    AuthService.protect,
+    AuthService.allowedTo("admin", "manager"),
+    uploadBrandImage,
+    resizeBrandImage,
+    createBrandValidator,
+    createBrand
+  )
   .get(getBrands);
 
 router
   .route("/:id")
   .get(getBrandValidator, getBrand)
-  .put(uploadBrandImage, resizeBrandImage, updateBrandValidator, updateBrand)
-  .delete(deleteBrandValidator, deleteBrand);
+  .put(
+    AuthService.protect,
+    AuthService.allowedTo("admin", "manager"),
+    uploadBrandImage,
+    resizeBrandImage,
+    updateBrandValidator,
+    updateBrand
+  )
+  .delete(
+    AuthService.protect,
+    AuthService.allowedTo("admin"),
+    deleteBrandValidator,
+    deleteBrand
+  );
 
 module.exports = router;

@@ -56,3 +56,12 @@ exports.loginValidator = [
     .withMessage("Too short password!"),
   validatorMiddleware,
 ];
+
+exports.forgotPasswordValidator = [
+  check("email")
+    .notEmpty()
+    .withMessage("User email is required!")
+    .isEmail()
+    .withMessage("Invalid email format!"),
+  validatorMiddleware,
+];

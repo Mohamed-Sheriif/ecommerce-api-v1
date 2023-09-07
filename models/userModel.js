@@ -21,6 +21,9 @@ const userSchema = new mongoose.Schema(
 
     phone: String,
     profileImage: String,
+    passwordResetCode: String,
+    passwordResetExpires: Date,
+    passwordResetVerified: Boolean,
 
     password: {
       type: String,

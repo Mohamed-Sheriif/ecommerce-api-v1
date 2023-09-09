@@ -27,7 +27,7 @@ exports.resizeBrandImage = asyncHandler(async (req, res, next) => {
 /**
  * @desc    Create brand
  * @route   POST /api/v1/brands
- * @access  Private
+ * @access  Private/Admin-Manager
  */
 exports.createBrand = factory.createOne(Brand);
 
@@ -48,13 +48,13 @@ exports.getBrand = factory.getOne(Brand);
 /**
  * @desc    Update specific brand
  * @route   PUT /api/v1/brands/:id
- * @access  Private
+ * @access  Private/Admin-Manager
  */
 exports.updateBrand = factory.updateOne(Brand);
 
 /**
  * @desc    Delete specific brand
  * @route   DELETE /api/v1/brands/:id
- * @access  Private
+ * @access  Private/Admin
  */
 exports.deleteBrand = factory.deleteOne(Brand);

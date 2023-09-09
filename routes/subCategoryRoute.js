@@ -17,19 +17,37 @@ const {
   deleteSubCategoryValidator,
 } = require("../validators/subCategoryValidator");
 
+const AuthService = require("../services/authService");
+
 // MergeParams: true is required to access params in other routes
 // ex: we need to access categoryId from category route
 const router = express.Router({ mergeParams: true });
 
 router
   .route("/")
-  .post(setCategoryToBody, createSubCategoryValidator, createSubCategory)
+  .post(
+    AuthService.protect,
+    AuthService.allowedTo("admin", "manager"),
+    setCategoryToBody,
+    createSubCategoryValidator,
+    createSubCategory
+  )
   .get(createFilterObject, getSubCategories);
 
 router
   .route("/:id")
   .get(getSubCategoryValidator, getSubCategory)
-  .put(updateSubCategoryValidator, updateSubCategory)
-  .delete(deleteSubCategoryValidator, deleteSubCategory);
+  .put(
+    AuthService.protect,
+    AuthService.allowedTo("admin", "manager"),
+    updateSubCategoryValidator,
+    updateSubCategory
+  )
+  .delete(
+    AuthService.protect,
+    AuthService.allowedTo("admin"),
+    deleteSubCategoryValidator,
+    deleteSubCategory
+  );
 
 module.exports = router;

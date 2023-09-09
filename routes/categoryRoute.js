@@ -17,6 +17,8 @@ const {
   deleteCategoryValidator,
 } = require("../validators/categoryValidator");
 
+const AuthService = require("../services/authService");
+
 const subCategoryRoute = require("./subCategoryRoute");
 
 const router = express.Router();
@@ -26,6 +28,8 @@ router.use("/:categoryId/subCategories", subCategoryRoute);
 router
   .route("/")
   .post(
+    AuthService.protect,
+    AuthService.allowedTo("admin", "manager"),
     uploadCategoryImage,
     resizeCategoryImage,
     createCategoryValidator,
@@ -37,11 +41,18 @@ router
   .route("/:id")
   .get(getCategoryValidator, getCategory)
   .put(
+    AuthService.protect,
+    AuthService.allowedTo("admin", "manager"),
     uploadCategoryImage,
     resizeCategoryImage,
     updateCategoryValidator,
     updateCategory
   )
-  .delete(deleteCategoryValidator, deleteCategory);
+  .delete(
+    AuthService.protect,
+    AuthService.allowedTo("admin"),
+    deleteCategoryValidator,
+    deleteCategory
+  );
 
 module.exports = router;

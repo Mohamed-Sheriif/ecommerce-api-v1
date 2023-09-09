@@ -92,6 +92,34 @@ exports.updateUserValidator = [
   validatorMiddleware,
 ];
 
+exports.updateLoggedUserValidator = [
+  check("name")
+    .optional()
+    .isLength({ min: 2 })
+    .withMessage("Too short brand name!")
+    .custom((value, { req }) => {
+      req.body.slug = slugify(value);
+      return true;
+    }),
+  check("email")
+    .notEmpty()
+    .withMessage("User email is required!")
+    .isEmail()
+    .withMessage("Invalid email format!")
+    .custom(async (value) => {
+      const user = await User.findOne({ email: value });
+
+      if (user) {
+        throw new Error("Email already exists!");
+      }
+    }),
+  check("phone")
+    .optional()
+    .isMobilePhone(["ar-EG", "ar-SA"])
+    .withMessage("Invalid phone number, only accept EG and SA phone numbers!"),
+  validatorMiddleware,
+];
+
 exports.updateUserPasswordValidator = [
   check("id")
     .notEmpty()

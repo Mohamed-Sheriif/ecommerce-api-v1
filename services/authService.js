@@ -7,17 +7,7 @@ const asyncHandler = require("express-async-handler");
 const ApiError = require("../utils/apiError");
 const User = require("../models/userModel");
 const sendEmail = require("../utils/sendEmail");
-
-const createToken = (payload) =>
-  jwt.sign(
-    {
-      userId: payload._id,
-      username: payload.name,
-      role: payload.role,
-    },
-    process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRES_IN }
-  );
+const createToken = require("../utils/createToken");
 
 /**
  * @desc    Signup user
@@ -77,10 +67,10 @@ exports.protect = asyncHandler(async (req, res, next) => {
   }
 
   // 2) Verify token
-  const decpded = jwt.verify(token, process.env.JWT_SECRET);
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
   // 3) Check if user still exist
-  const curruntUser = await User.findById(decpded.userId);
+  const curruntUser = await User.findById(decoded.userId);
   if (!curruntUser) {
     return next(
       new ApiError(
@@ -90,7 +80,12 @@ exports.protect = asyncHandler(async (req, res, next) => {
     );
   }
 
-  // 4) Check if user changed password after the token was issued
+  // 4) Check if user is deactivated
+  if (!curruntUser.active) {
+    return next(new ApiError("This user is deactivated!", 401));
+  }
+
+  // 5) Check if user changed password after the token was issued
   if (curruntUser.passwordChangedAt) {
     const changedPasswordInTimestamp = parseInt(
       curruntUser.passwordChangedAt.getTime() / 1000,
@@ -98,7 +93,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
     );
 
     // Passsword changed after token was issued (Error)
-    if (decpded.iat < changedPasswordInTimestamp) {
+    if (decoded.iat < changedPasswordInTimestamp) {
       return next(
         new ApiError(
           "User recently changed password! Please log in again.",

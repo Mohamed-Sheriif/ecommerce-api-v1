@@ -34,10 +34,17 @@ exports.getAll = (Model, modelName = "") =>
       .json({ result: documents.length, paginationResult, data: documents });
   });
 
-exports.getOne = (Model) =>
+exports.getOne = (Model, populateOpt) =>
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
-    const document = await Model.findById(id);
+
+    // 1) Build query
+    let query = Model.findById(id);
+
+    if (populateOpt) query = query.populate(populateOpt);
+
+    // Execute query
+    const document = await query;
 
     // Check if document exists
     if (!document) {

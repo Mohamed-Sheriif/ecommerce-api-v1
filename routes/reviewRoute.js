@@ -8,12 +8,12 @@ const {
   deleteReview,
 } = require("../services/reviewService");
 
-// const {
-//   getReviewValidator,
-//   createBrandValidator,
-//   updateBrandValidator,
-//   deleteBrandValidator,
-// } = require("../validators/brandValidator");
+const {
+  createReviewValidator,
+  updateReviewValidator,
+  getReviewValidator,
+  deleteReviewValidator,
+} = require("../validators/reviewValidator");
 
 const AuthService = require("../services/authService");
 
@@ -21,16 +21,27 @@ const router = express.Router();
 
 router
   .route("/")
-  .post(AuthService.protect, AuthService.allowedTo("user"), createReview)
+  .post(
+    AuthService.protect,
+    AuthService.allowedTo("user"),
+    createReviewValidator,
+    createReview
+  )
   .get(getReviews);
 
 router
   .route("/:id")
-  .get(getReview)
-  .put(AuthService.protect, AuthService.allowedTo("user"), updateReview)
+  .get(getReviewValidator, getReview)
+  .put(
+    AuthService.protect,
+    AuthService.allowedTo("user"),
+    updateReviewValidator,
+    updateReview
+  )
   .delete(
     AuthService.protect,
     AuthService.allowedTo("admin", "manager", "user"),
+    deleteReviewValidator,
     deleteReview
   );
 

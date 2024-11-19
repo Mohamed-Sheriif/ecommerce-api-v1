@@ -18,8 +18,15 @@ const {
 } = require("../validators/productValidator");
 
 const AuthService = require("../services/authService");
+const ReviewRouter = require("./reviewRoute");
 
 const router = express.Router();
+
+// Nested Route (Valid for these routes)
+// POST /api/v1/products/:productId/reviews
+// GET /api/v1/products/:productId/reviews
+// GET /api/v1/products/:productId/reviews/:reviewId
+router.use("/:productId/reviews", ReviewRouter);
 
 router
   .route("/")

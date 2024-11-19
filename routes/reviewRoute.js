@@ -6,6 +6,8 @@ const {
   getReview,
   updateReview,
   deleteReview,
+  createFilterObject,
+  setProductIdAndUserIdToBody,
 } = require("../services/reviewService");
 
 const {
@@ -17,17 +19,20 @@ const {
 
 const AuthService = require("../services/authService");
 
-const router = express.Router();
+// MergeParams: true is required to access params in other routes
+// ex: we need to access productId from product route
+const router = express.Router({ mergeParams: true });
 
 router
   .route("/")
   .post(
     AuthService.protect,
     AuthService.allowedTo("user"),
+    setProductIdAndUserIdToBody,
     createReviewValidator,
     createReview
   )
-  .get(getReviews);
+  .get(createFilterObject, getReviews);
 
 router
   .route("/:id")

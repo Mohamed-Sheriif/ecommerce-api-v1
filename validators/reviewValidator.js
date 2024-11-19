@@ -86,7 +86,7 @@ exports.deleteReviewValidator = [
         }
 
         // Check if review belongs to the user
-        if (review.user.toString() !== req.user._id.toString()) {
+        if (review.user._id.toString() !== req.user._id.toString()) {
           throw new Error("You are not authorized to delete this review");
         }
       }

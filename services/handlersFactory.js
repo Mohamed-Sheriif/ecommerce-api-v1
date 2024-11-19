@@ -67,6 +67,9 @@ exports.updateOne = (Model) =>
       );
     }
 
+    // Triggers the save middleware
+    await document.save();
+
     res.status(200).json({ data: document });
   });
 
@@ -80,6 +83,9 @@ exports.deleteOne = (Model) =>
     if (!document) {
       return next(new ApiError(`No document with this id: ${id} !`, 404));
     }
+
+    // Triggers the remove middleware
+    await document.deleteOne();
 
     res.status(204).send();
   });

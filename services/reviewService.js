@@ -1,12 +1,29 @@
 const factory = require("./handlersFactory");
 const Review = require("../models/reviewModel");
 
+// Middleware to add product to req.body
+exports.setProductIdAndUserIdToBody = (req, res, next) => {
+  // Nested route
+  if (req.params.productId) req.body.product = req.params.productId;
+  req.body.user = req.user.id;
+  next();
+};
+
 /**
  * @desc    Create review
  * @route   POST /api/v1/reviews
  * @access  Private/Protect/User
  */
 exports.createReview = factory.createOne(Review);
+
+// Nested route for get reviews
+// GET /api/v1/products/:productId/reviews
+exports.createFilterObject = (req, res, next) => {
+  let filterObject = {};
+  if (req.params.productId) filterObject = { product: req.params.productId };
+  req.filterObj = filterObject;
+  next();
+};
 
 /**
  * @desc    Get list of reviews

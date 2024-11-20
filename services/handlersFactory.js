@@ -34,10 +34,17 @@ exports.getAll = (Model, modelName = "") =>
       .json({ result: documents.length, paginationResult, data: documents });
   });
 
-exports.getOne = (Model) =>
+exports.getOne = (Model, populateOpt) =>
   asyncHandler(async (req, res, next) => {
     const { id } = req.params;
-    const document = await Model.findById(id);
+
+    // 1) Build query
+    let query = Model.findById(id);
+
+    if (populateOpt) query = query.populate(populateOpt);
+
+    // Execute query
+    const document = await query;
 
     // Check if document exists
     if (!document) {
@@ -60,6 +67,9 @@ exports.updateOne = (Model) =>
       );
     }
 
+    // Triggers the save middleware
+    await document.save();
+
     res.status(200).json({ data: document });
   });
 
@@ -73,6 +83,9 @@ exports.deleteOne = (Model) =>
     if (!document) {
       return next(new ApiError(`No document with this id: ${id} !`, 404));
     }
+
+    // Triggers the remove middleware
+    await document.deleteOne();
 
     res.status(204).send();
   });

@@ -1,6 +1,6 @@
 const { check } = require("express-validator");
 
-const Prosuct = require("../models/productModel");
+const Product = require("../models/productModel");
 const validatorMiddleware = require("../middlewares/validatorMiddleware");
 
 exports.addProductToWishlistValidator = [
@@ -10,7 +10,7 @@ exports.addProductToWishlistValidator = [
     .isMongoId()
     .withMessage("Invalid product id format!")
     .custom(async (value) => {
-      const product = await Prosuct.findById(value);
+      const product = await Product.findById(value);
 
       if (!product) {
         throw new Error("Product not found!");
@@ -26,7 +26,7 @@ exports.removeProductFromWishlistValidator = [
     .isMongoId()
     .withMessage("Invalid product id format!")
     .custom(async (value) => {
-      const product = await Prosuct.findById(value);
+      const product = await Product.findById(value);
 
       if (!product) {
         throw new Error("Product not found!");

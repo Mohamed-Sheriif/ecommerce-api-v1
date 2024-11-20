@@ -98,11 +98,23 @@ This is an E-commerce API built with Node.js, Express, and MongoDB. It provides 
   - `POST /api/v1/auth/resetPassword`
 
 - **Reviews**
+
   - `GET /api/v1/reviews`
   - `POST /api/v1/reviews`
   - `GET /api/v1/reviews/:id`
   - `PATCH /api/v1/reviews/:id`
   - `DELETE /api/v1/reviews/:id`
+
+- **Wishlist**
+
+  - `GET /api/v1/wishlist`
+  - `POST /api/v1/wishlist`
+  - `DELETE /api/v1/wishlist/:productId`
+
+- **addresses**
+  - `GET /api/v1/addresses`
+  - `POST /api/v1/addresses`
+  - `DELETE /api/v1/addresses/:addressId`
 
 ## Authentication and Authorization
 

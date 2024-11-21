@@ -4,6 +4,7 @@ const {
   addProductToCart,
   getLoggedUserCart,
   removeProductFromCart,
+  deleteUserCart,
 } = require("../services/cartService");
 
 const {
@@ -20,7 +21,8 @@ router.use(AuthService.protect, AuthService.allowedTo("user"));
 router
   .route("/")
   .post(addProductToCartValidator, addProductToCart)
-  .get(getLoggedUserCart);
+  .get(getLoggedUserCart)
+  .delete(deleteUserCart);
 
 router
   .route("/:productId")

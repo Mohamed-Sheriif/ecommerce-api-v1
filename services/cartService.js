@@ -113,3 +113,17 @@ exports.removeProductFromCart = asyncHandler(async (req, res, next) => {
     cart,
   });
 });
+
+/**
+ * @desc   Delete user cart
+ * @route  DELETE /api/v1/cart
+ * @access Private/User
+ */
+exports.deleteUserCart = asyncHandler(async (req, res, next) => {
+  const cart = await Cart.findOneAndDelete({ user: req.user.id });
+  if (!cart) {
+    return next(new ApiError("There is not cart for this user", 404));
+  }
+
+  res.status(204).send();
+});

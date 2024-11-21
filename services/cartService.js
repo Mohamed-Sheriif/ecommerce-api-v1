@@ -3,6 +3,7 @@ const ApiError = require("../utils/apiError");
 
 const Cart = require("../models/cartModel");
 const Product = require("../models/productModel");
+const Coupon = require("../models/couponModel");
 
 /**
  * @desc   Add product to cart
@@ -164,4 +165,42 @@ exports.deleteUserCart = asyncHandler(async (req, res, next) => {
   }
 
   res.status(204).send();
+});
+
+/**
+ * @desc   Apply coupon to cart
+ * @route  POST /api/v1/cart/applyCoupon
+ * @access Private/User
+ */
+exports.applyCoupon = asyncHandler(async (req, res, next) => {
+  const coupon = await Coupon.findOne({
+    name: req.body.coupon,
+    expire: { $gt: Date.now() },
+  });
+
+  // Check if coupon exist and not expired
+  if (!coupon) {
+    return next(new ApiError("Coupon not found or expired", 404));
+  }
+
+  const cart = await Cart.findOne({ user: req.user.id });
+
+  // Check if user has cart
+  if (!cart) {
+    return next(new ApiError("There is not cart for this user", 404));
+  }
+
+  // Apply coupon to cart
+  const { totalCartPrice } = cart;
+  const discount = (totalCartPrice * coupon.discount) / 100;
+  cart.totalPriceAfterDiscount = (totalCartPrice - discount).toFixed(2);
+
+  // Save cart
+  await cart.save();
+
+  res.status(200).json({
+    status: "success",
+    numOfCartItems: cart.cartItems.length,
+    data: cart,
+  });
 });

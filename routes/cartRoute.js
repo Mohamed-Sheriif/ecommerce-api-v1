@@ -6,6 +6,7 @@ const {
   updateProductQuantity,
   removeProductFromCart,
   deleteUserCart,
+  applyCoupon,
 } = require("../services/cartService");
 
 const {
@@ -25,6 +26,8 @@ router
   .post(addProductToCartValidator, addProductToCart)
   .get(getLoggedUserCart)
   .delete(deleteUserCart);
+
+router.route("/applyCoupon").put(applyCoupon);
 
 router
   .route("/:productId")

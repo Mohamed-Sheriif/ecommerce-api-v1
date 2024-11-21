@@ -3,12 +3,14 @@ const express = require("express");
 const {
   addProductToCart,
   getLoggedUserCart,
+  updateProductQuantity,
   removeProductFromCart,
   deleteUserCart,
 } = require("../services/cartService");
 
 const {
   addProductToCartValidator,
+  updateProductQuantityValidator,
   removeProductFromCartValidator,
 } = require("../validators/cartValidator");
 
@@ -26,6 +28,7 @@ router
 
 router
   .route("/:productId")
-  .delete(removeProductFromCartValidator, removeProductFromCart);
+  .delete(removeProductFromCartValidator, removeProductFromCart)
+  .put(updateProductQuantityValidator, updateProductQuantity);
 
 module.exports = router;

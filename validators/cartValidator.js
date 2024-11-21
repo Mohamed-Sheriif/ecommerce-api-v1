@@ -15,3 +15,12 @@ exports.addProductToCartValidator = [
     .withMessage("Color must be a string"),
   validatorMiddleware,
 ];
+
+exports.removeProductFromCartValidator = [
+  check("productId")
+    .notEmpty()
+    .withMessage("Product ID is required")
+    .isMongoId()
+    .withMessage("Invalid product ID"),
+  validatorMiddleware,
+];

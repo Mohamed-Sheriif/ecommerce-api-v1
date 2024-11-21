@@ -55,6 +55,7 @@ exports.addProductToCart = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
+    numOfCartItems: cart.cartItems.length,
     cart,
   });
 });
@@ -73,5 +74,42 @@ exports.getLoggedUserCart = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     numOfCartItems: cart.cartItems.length,
     data: cart,
+  });
+});
+
+/**
+ * @desc   Remove product from cart
+ * @route  DELETE /api/v1/cart/:productId
+ * @access Private/User
+ */
+exports.removeProductFromCart = asyncHandler(async (req, res, next) => {
+  const { productId } = req.params;
+
+  const cart = await Cart.findOne({ user: req.user.id });
+  if (!cart) {
+    return next(new ApiError("There is not cart for this user", 404));
+  }
+
+  const productIndex = cart.cartItems.findIndex(
+    (item) => item.product.toString() === productId
+  );
+
+  if (productIndex === -1) {
+    return next(new ApiError("Product not found in cart", 404));
+  }
+
+  cart.cartItems.splice(productIndex, 1);
+
+  // Calculate total price
+  cart.totalCartPrice = cart.cartItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+
+  await cart.save();
+
+  res.status(200).json({
+    status: "success",
+    cart,
   });
 });

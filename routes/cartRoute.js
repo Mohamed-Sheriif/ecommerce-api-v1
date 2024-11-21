@@ -3,9 +3,13 @@ const express = require("express");
 const {
   addProductToCart,
   getLoggedUserCart,
+  removeProductFromCart,
 } = require("../services/cartService");
 
-const { addProductToCartValidator } = require("../validators/cartValidator");
+const {
+  addProductToCartValidator,
+  removeProductFromCartValidator,
+} = require("../validators/cartValidator");
 
 const AuthService = require("../services/authService");
 
@@ -17,5 +21,9 @@ router
   .route("/")
   .post(addProductToCartValidator, addProductToCart)
   .get(getLoggedUserCart);
+
+router
+  .route("/:productId")
+  .delete(removeProductFromCartValidator, removeProductFromCart);
 
 module.exports = router;

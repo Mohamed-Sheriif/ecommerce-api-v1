@@ -1,6 +1,9 @@
 const express = require("express");
 
-const { addProductToCart } = require("../services/cartService");
+const {
+  addProductToCart,
+  getLoggedUserCart,
+} = require("../services/cartService");
 
 const { addProductToCartValidator } = require("../validators/cartValidator");
 
@@ -10,6 +13,9 @@ const router = express.Router();
 
 router.use(AuthService.protect, AuthService.allowedTo("user"));
 
-router.route("/").post(addProductToCartValidator, addProductToCart);
+router
+  .route("/")
+  .post(addProductToCartValidator, addProductToCart)
+  .get(getLoggedUserCart);
 
 module.exports = router;

@@ -43,11 +43,11 @@ const orderSchema = new mongoose.Schema(
       default: false,
     },
     paidAt: Date,
-    isDelevered: {
+    isDelivered: {
       type: Boolean,
       default: false,
     },
-    deleveredAt: Date,
+    deliveredAt: Date,
   },
   { timestamps: true }
 );

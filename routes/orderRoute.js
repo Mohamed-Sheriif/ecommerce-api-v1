@@ -4,6 +4,8 @@ const {
   createCashOrder,
   getOrders,
   getOrder,
+  updateOrderToPaid,
+  updateOrderToDelivered,
   filterOrdersByLoggedUser,
 } = require("../services/orderService");
 
@@ -21,7 +23,18 @@ router.get(
   filterOrdersByLoggedUser,
   getOrders
 );
-
 router.get("/:id", AuthService.allowedTo("admin", "manager", "user"), getOrder);
+
+router.put(
+  "/:id/pay",
+  AuthService.allowedTo("admin", "manager"),
+  updateOrderToPaid
+);
+
+router.put(
+  "/:id/deliver",
+  AuthService.allowedTo("admin", "manager"),
+  updateOrderToDelivered
+);
 
 module.exports = router;

@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const sharp = require("sharp");
 
 const orderSchema = new mongoose.Schema(
   {
@@ -19,6 +18,12 @@ const orderSchema = new mongoose.Schema(
         price: Number,
       },
     ],
+    shippingAddress: {
+      detials: String,
+      phone: String,
+      city: String,
+      postalCode: String,
+    },
     taxPrice: {
       type: Number,
       default: 0.0,

@@ -1,13 +1,27 @@
 const express = require("express");
 
-const { createCashOrder } = require("../services/orderService");
+const {
+  createCashOrder,
+  getOrders,
+  getOrder,
+  filterOrdersByLoggedUser,
+} = require("../services/orderService");
 
 const AuthService = require("../services/authService");
 
 const router = express.Router();
 
-router.use(AuthService.protect, AuthService.allowedTo("user"));
+router.use(AuthService.protect);
 
-router.route("/:cartId").post(createCashOrder);
+router.post("/:cartId", AuthService.allowedTo("user"), createCashOrder);
+
+router.get(
+  "/",
+  AuthService.allowedTo("admin", "manager", "user"),
+  filterOrdersByLoggedUser,
+  getOrders
+);
+
+router.get("/:id", AuthService.allowedTo("admin", "manager", "user"), getOrder);
 
 module.exports = router;

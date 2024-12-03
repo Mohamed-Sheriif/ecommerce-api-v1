@@ -56,3 +56,39 @@ exports.createCashOrder = asyncHandler(async (req, res, next) => {
     data: order,
   });
 });
+
+exports.filterOrdersByLoggedUser = (req, res, next) => {
+  if (req.user.role === "user") req.filterObj = { user: req.user._id };
+  next();
+};
+
+/**
+ * @desc      Get orders
+ * @route     POST /api/v1/orders/cartId
+ * @access    Private/User-Admin-Manager
+ */
+exports.getOrders = factory.getAll(Order);
+
+/**
+ * @desc      Get order
+ * @route     POST /api/v1/orders/:id
+ * @access    Private/User-Admin-Manager
+ */
+exports.getOrder = asyncHandler(async (req, res, next) => {
+  const userId = req.user._id;
+  const orderId = req.params.id;
+
+  const order = await Order.findById(orderId);
+
+  if (req.user.role === "user" && order.user.toString() !== userId.toString()) {
+    return next(new ApiError("You are not allowed to access this order", 403));
+  }
+
+  if (!order) {
+    return next(new ApiError("Order not found", 404));
+  }
+
+  res.status(200).json({
+    data: order,
+  });
+});

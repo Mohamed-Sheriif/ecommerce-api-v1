@@ -1,3 +1,6 @@
+const stripe = require("stripe")(
+  `sk_test_51QSGA9DtZB3mkL4ZW6PpNhjSb1RRwJushhkt2Kpqda3uOd3u73HO41i2OyeCriUdXb9w9nrkOBmBs8RxWZLptutg00c443l38X`
+);
 const asyncHandler = require("express-async-handler");
 
 const ApiError = require("../utils/apiError");
@@ -136,5 +139,56 @@ exports.updateOrderToDelivered = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     data: updatedOrder,
+  });
+});
+
+/**
+ * @desc      Get checkout session from stripe and send it as response
+ * @route     GET /api/v1/orders/checkout-session/:cartId
+ * @access    Protected/User
+ */
+exports.checkoutSession = asyncHandler(async (req, res, next) => {
+  const taxPrice = 0.0;
+  const shippingPrice = 0.0;
+
+  // 1) Get cart based on cartId
+  const cart = await Cart.findById(req.params.cartId);
+  if (!cart) {
+    return next(new ApiError("Cart not found", 404));
+  }
+
+  // 2) Get otder total price based on cart price "check if coupon is applied"
+  const cartPrice = cart.totalPriceAfterDiscount
+    ? cart.totalPriceAfterDiscount
+    : cart.totalCartPrice;
+
+  const totalOrderPrice = cartPrice + taxPrice + shippingPrice;
+
+  // 3) Create stripe checkout session
+  const session = await stripe.checkout.sessions.create({
+    line_items: [
+      {
+        price_data: {
+          currency: "egp", // Set your currency
+          product_data: {
+            name: req.user.name, // User's name as the product name
+          },
+          unit_amount: totalOrderPrice * 100, // Amount in the smallest currency unit (e.g., piasters for EGP)
+        },
+        quantity: 1, // Quantity of the item
+      },
+    ],
+    mode: "payment",
+    success_url: `${req.protocol}://${req.get("host")}/orders`,
+    cancel_url: `${req.protocol}://${req.get("host")}/cart`,
+    customer_email: req.user.email,
+    client_reference_id: req.params.cartId,
+    metadata: req.body.shippingAddress,
+  });
+
+  // 4) Send session as response
+  res.status(200).json({
+    status: "success",
+    session,
   });
 });

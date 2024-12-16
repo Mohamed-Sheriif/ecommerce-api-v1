@@ -23,16 +23,25 @@ const subCategoryRoute = require("./subCategoryRoute");
 
 const router = express.Router();
 
-router.use("/:categoryId/subCategories", subCategoryRoute);
-// Make a swagger docs for create category
 /**
  * @swagger
- * /api/v1/categories:
+ * /categories/:categoryId/subCategories:
+ *  use:
+ *    tags:
+ *      - Categories
+ *    summary: Subcategories Operations
+ *    description: Routes for handling subcategories under a specific category.
+ */
+router.use("/:categoryId/subCategories", subCategoryRoute);
+
+/**
+ * @swagger
+ * /categories:
  *  post:
  *    tags:
  *      - Categories
- *    summary: Create a new category
- *    description: Create a new category
+ *    summary: Create Category
+ *    description: Create a new category (requires admin or manager authorization).
  *    security:
  *      - bearerAuth: []
  *    requestBody:
@@ -45,24 +54,24 @@ router.use("/:categoryId/subCategories", subCategoryRoute);
  *              name:
  *                type: string
  *                description: The name of the category
- *              description:
- *                type: string
- *                description: The description of the category
+ *                example: Electronics
  *              image:
  *                type: string
  *                format: binary
- *                description: The image of the category
+ *                description: Category image file
  *    responses:
  *      201:
  *        description: Category created successfully
  *      400:
- *        description: Bad request
- *      401:
- *        description: Unauthorized
- *      403:
- *        description: Forbidden
- *      500:
- *        description: Internal server error
+ *        description: Invalid data
+ *  get:
+ *    tags:
+ *      - Categories
+ *    summary: Get All Categories
+ *    description: Retrieve a list of all categories.
+ *    responses:
+ *      200:
+ *        description: Categories fetched successfully
  */
 router
   .route("/")
@@ -76,6 +85,88 @@ router
   )
   .get(getCategories);
 
+/**
+ * @swagger
+ * /categories/{id}:
+ *  get:
+ *    tags:
+ *      - Categories
+ *    summary: Get Category by ID
+ *    description: Retrieve a single category by its ID.
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *        description: The ID of the category to retrieve
+ *    responses:
+ *      200:
+ *        description: Category fetched successfully
+ *      404:
+ *        description: Category not found
+ *  put:
+ *    tags:
+ *      - Categories
+ *    summary: Update Category
+ *    description: Update an existing category (requires admin or manager authorization).
+ *    security:
+ *      - bearerAuth: []
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *        description: The ID of the category to retrieve
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        multipart/form-data:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              name:
+ *                type: string
+ *                description: The updated name of the category
+ *              description:
+ *                type: string
+ *                description: The updated description of the category
+ *              image:
+ *                type: string
+ *                format: binary
+ *                description: The updated category image file
+ *    responses:
+ *      200:
+ *        description: Category updated successfully
+ *      400:
+ *        description: Invalid data
+ *      403:
+ *        description: Forbidden
+ *      404:
+ *        description: Category not found
+ *  delete:
+ *    tags:
+ *      - Categories
+ *    summary: Delete Category
+ *    description: Delete an existing category (requires admin authorization).
+ *    security:
+ *      - bearerAuth: []
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *        description: The ID of the category to delete
+ *    responses:
+ *      204:
+ *        description: Category deleted successfully
+ *      403:
+ *        description: Forbidden
+ *      404:
+ *        description: Category not found
+ */
 router
   .route("/:id")
   .get(getCategoryValidator, getCategory)

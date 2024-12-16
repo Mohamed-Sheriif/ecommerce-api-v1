@@ -1,5 +1,7 @@
 const path = require("path");
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerJSDoc = require("swagger-jsdoc");
 const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
@@ -20,6 +22,34 @@ dbConnection();
 // Express app
 const app = express();
 
+// Swagger definition
+const swaggerOptions = {
+  swaggerDefinition: {
+    openapi: "3.0.0",
+    info: {
+      title: "E-commerce API",
+      version: "1.0.0",
+      description: "API documentation using Swagger for E-commerce",
+    },
+    servers: [
+      {
+        url: `http://localhost:${process.env.PORT}/api/v1`,
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+  },
+  apis: ["./routes/*.js"], // Path to your API docs
+};
+const swaggerDocs = swaggerJSDoc(swaggerOptions);
+
 // Middleware
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "uploads")));
@@ -29,6 +59,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // Mount routes
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 mountRoutes(app);
 
 app.all("*", (req, res, next) => {

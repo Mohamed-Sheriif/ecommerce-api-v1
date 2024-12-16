@@ -60,8 +60,6 @@ const router = express.Router({ mergeParams: true });
  *              category: 64af8f6e71c4e07e2c5e3d62
  *      400:
  *        description: Invalid input
- *      400:
- *        description: Invalid input
  *      401:
  *        description: Unauthorized
  *      403:
@@ -77,6 +75,24 @@ const router = express.Router({ mergeParams: true });
  *        schema:
  *          type: string
  *        description: The ID of the parent category to filter subcategories
+ *      - in: query
+ *        name: page
+ *        schema:
+ *          type: integer
+ *          default: 1
+ *        description: The page number for pagination
+ *      - in: query
+ *        name: limit
+ *        schema:
+ *          type: integer
+ *          default: 10
+ *        description: The number of subcategories per page
+ *      - in: query
+ *        name: sort
+ *        schema:
+ *          type: string
+ *          default: name
+ *        description: The field to sort the results by (e.g., name)
  *    responses:
  *      200:
  *        description: Subcategories fetched successfully

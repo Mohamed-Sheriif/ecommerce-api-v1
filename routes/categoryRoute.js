@@ -63,12 +63,36 @@ router.use("/:categoryId/subCategories", subCategoryRoute);
  *      201:
  *        description: Category created successfully
  *      400:
- *        description: Invalid data
+ *        description: Invalid input
+ *      401:
+ *        description: Unauthorized
+ *      403:
+ *        description: Forbidden
+
  *  get:
  *    tags:
  *      - Categories
  *    summary: Get All Categories
  *    description: Retrieve a list of all categories.
+ *    parameters:
+ *      - in: query
+ *        name: page
+ *        schema:
+ *          type: integer
+ *          default: 1
+ *        description: The page number for pagination
+ *      - in: query
+ *        name: limit
+ *        schema:
+ *          type: integer
+ *          default: 10
+ *        description: The number of categories per page
+ *      - in: query
+ *        name: sort
+ *        schema:
+ *          type: string
+ *          default: name
+ *        description: The field to sort the results by (e.g., name)
  *    responses:
  *      200:
  *        description: Categories fetched successfully
@@ -141,6 +165,8 @@ router
  *        description: Category updated successfully
  *      400:
  *        description: Invalid data
+ *      401:
+ *        description: Unauthorized
  *      403:
  *        description: Forbidden
  *      404:
@@ -162,6 +188,8 @@ router
  *    responses:
  *      204:
  *        description: Category deleted successfully
+ *      401:
+ *        description: Unauthorized
  *      403:
  *        description: Forbidden
  *      404:

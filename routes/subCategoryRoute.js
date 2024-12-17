@@ -25,6 +25,56 @@ const router = express.Router({ mergeParams: true });
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     SubCategory:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: 6704e0d0aa86b5687912c893
+ *         name:
+ *           type: string
+ *           example: Laptops
+ *         slug:
+ *           type: string
+ *           example: laptops
+ *         category:
+ *           type: string
+ *           example: 6704e0a6aa86b5687912c88b
+ *         createdAt:
+ *           type: string
+ *           example: 2024-10-08T07:35:44.240Z
+ *         updatedAt:
+ *           type: string
+ *           example: 2024-10-08T07:35:44.240Z
+ *
+ *     SubCategoryListResponse:
+ *       type: object
+ *       properties:
+ *         result:
+ *           type: integer
+ *           example: 7
+ *         paginationResult:
+ *           type: object
+ *           properties:
+ *             currentPage:
+ *               type: integer
+ *               example: 1
+ *             pageSize:
+ *               type: integer
+ *               example: 10
+ *             numberOfPages:
+ *               type: integer
+ *               example: 1
+ *         data:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/SubCategory'
+ */
+
+/**
+ * @swagger
  * /subCategories:
  *  post:
  *    tags:
@@ -91,22 +141,17 @@ const router = express.Router({ mergeParams: true });
  *        name: sort
  *        schema:
  *          type: string
- *          default: name
- *        description: The field to sort the results by (e.g., name)
+ *          default: createdAt
+ *        description: The field to sort the results by (e.g., createdAt)
  *    responses:
  *      200:
  *        description: Subcategories fetched successfully
  *        content:
  *          application/json:
- *            example:
- *              - id: 123456789
- *                name: Smartphones
- *                slug: smartphones
- *                category: 64af8f6e71c4e07e2c5e3d62
- *              - id: 987654321
- *                name: Tablets
- *                slug: tablets
- *                category: 64af8f6e71c4e07e2c5e3d62
+ *            schema:
+ *              $ref: '#/components/schemas/SubCategoryListResponse'
+ *      400:
+ *        description: Invalid input
  */
 router
   .route("/")
@@ -139,11 +184,11 @@ router
  *        description: Subcategory fetched successfully
  *        content:
  *          application/json:
- *            example:
- *              id: 123456789
- *              name: Smartphones
- *              slug: smartphones
- *              category: 64af8f6e71c4e07e2c5e3d62
+ *            schema:
+ *              type: object
+ *              properties:
+ *                data:
+ *                  $ref: '#/components/schemas/SubCategory'
  *      400:
  *        description: Invalid input
  *      404:
@@ -178,11 +223,11 @@ router
  *        description: Subcategory updated successfully
  *        content:
  *          application/json:
- *            example:
- *              id: 123456789
- *              name: Updated Smartphones
- *              slug: updated-smartphones
- *              category: 64af8f6e71c4e07e2c5e3d62
+ *            schema:
+ *              type: object
+ *              properties:
+ *                data:
+ *                  $ref: '#/components/schemas/SubCategory'
  *      400:
  *        description: Invalid input
  *      401:

@@ -25,6 +25,58 @@ const router = express.Router();
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     Category:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: 61f29c5e4b0e9c4dc62b3a0a
+ *         name:
+ *           type: string
+ *           example: Electronics
+ *         slug:
+ *           type: string
+ *           example: electronics
+ *         image:
+ *           type: string
+ *           example: http://localhost:8000/categories/category-image.jpg
+ *         createdAt:
+ *           type: string
+ *           example: 2022-01-28T19:38:38.000Z
+ *         updatedAt:
+ *           type: string
+ *           example: 2022-01-28T19:38:38.000Z
+ *     CategoryListResponse:
+ *       type: object
+ *       properties:
+ *         result:
+ *           type: integer
+ *           example: 10
+ *         paginationResult:
+ *           type: object
+ *           properties:
+ *             currentPage:
+ *               type: integer
+ *               example: 1
+ *             pageSize:
+ *               type: integer
+ *               example: 10
+ *             numberOfPages:
+ *               type: integer
+ *               example: 2
+ *             nextPage:
+ *               type: integer
+ *               example: 2
+ *         data:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Category'
+ */
+
+/**
+ * @swagger
  * /categories/:categoryId/subCategories:
  *  use:
  *    tags:
@@ -91,11 +143,17 @@ router.use("/:categoryId/subCategories", subCategoryRoute);
  *        name: sort
  *        schema:
  *          type: string
- *          default: name
- *        description: The field to sort the results by (e.g., name)
+ *          default: createdAt
+ *        description: The field to sort the results by (e.g., createdAt)
  *    responses:
  *      200:
  *        description: Categories fetched successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/CategoryListResponse'
+ *      400:
+ *        description: Bad request
  */
 router
   .route("/")
@@ -127,6 +185,15 @@ router
  *    responses:
  *      200:
  *        description: Category fetched successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                data:
+ *                  $ref: '#/components/schemas/Category'
+ *      400:
+ *        description: Bad request
  *      404:
  *        description: Category not found
  *  put:
@@ -153,9 +220,7 @@ router
  *              name:
  *                type: string
  *                description: The updated name of the category
- *              description:
- *                type: string
- *                description: The updated description of the category
+ *                example: Electronics
  *              image:
  *                type: string
  *                format: binary
@@ -163,6 +228,13 @@ router
  *    responses:
  *      200:
  *        description: Category updated successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                data:
+ *                  $ref: '#/components/schemas/Category'
  *      400:
  *        description: Invalid data
  *      401:

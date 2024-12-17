@@ -23,6 +23,58 @@ const router = express.Router();
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     Brand:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: 61f29c5e4b0e9c4dc62b3a0a
+ *         name:
+ *           type: string
+ *           example: Samsung
+ *         slug:
+ *           type: string
+ *           example: samsung
+ *         image:
+ *           type: string
+ *           example: http://localhost:8000/brands/brand-image.jpg
+ *         createdAt:
+ *           type: string
+ *           example: 2022-01-28T19:38:38.000Z
+ *         updatedAt:
+ *           type: string
+ *           example: 2022-01-28T19:38:38.000Z
+ *     BrandListResponse:
+ *       type: object
+ *       properties:
+ *         result:
+ *           type: integer
+ *           example: 10
+ *         paginationResult:
+ *           type: object
+ *           properties:
+ *             currentPage:
+ *               type: integer
+ *               example: 1
+ *             pageSize:
+ *               type: integer
+ *               example: 10
+ *             numberOfPages:
+ *               type: integer
+ *               example: 2
+ *             nextPage:
+ *               type: integer
+ *               example: 2
+ *         data:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Brand'
+ */
+
+/**
+ * @swagger
  * /brands:
  *  post:
  *    tags:
@@ -83,6 +135,12 @@ const router = express.Router();
  *    responses:
  *      200:
  *        description: Brands fetched successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/CategoryListResponse'
+ *      400:
+ *        description: Bad request
  */
 router
   .route("/")
@@ -114,6 +172,15 @@ router
  *    responses:
  *      200:
  *        description: Brands fetched successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                data:
+ *                  $ref: '#/components/schemas/Brand'
+ *      400:
+ *        description: Bad request
  *      404:
  *        description: Brands not found
  *  put:
@@ -150,6 +217,13 @@ router
  *    responses:
  *      200:
  *        description: Brand updated successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                data:
+ *                  $ref: '#/components/schemas/Brand'
  *      400:
  *        description: Invalid data
  *      401:

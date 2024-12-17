@@ -18,6 +18,57 @@ const router = express.Router();
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     AuthResponse:
+ *       type: object
+ *       properties:
+ *         data:
+ *           type: object
+ *           properties:
+ *             user:
+ *               type: object
+ *               properties:
+ *                 name:
+ *                   type: string
+ *                   example: Mohamed Sheriif
+ *                 slug:
+ *                   type: string
+ *                   example: mohamed-sheriif
+ *                 email:
+ *                   type: string
+ *                   example: mohamedsh@gmail.com
+ *                 password:
+ *                   type: string
+ *                   example: $2a$10$4rxZCBln78YYmoh/WblfyO9pWo3cdNXiQMu8osKKeAwvIraOiD30q
+ *                 role:
+ *                   type: string
+ *                   example: user
+ *                 active:
+ *                   type: boolean
+ *                   example: true
+ *                 wishlist:
+ *                   type: array
+ *                   example: []
+ *                 _id:
+ *                   type: string
+ *                   example: 61f29c5e4b0e9c4dc62b3a0a
+ *                 addresses:
+ *                   type: array
+ *                   example: []
+ *                 createdAt:
+ *                   type: string
+ *                   example: 2022-01-28T19:38:38.000Z
+ *                 updatedAt:
+ *                   type: string
+ *                   example: 2022-01-28T19:38:38.000Z
+ *             token:
+ *               type: string
+ *               example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MWYyOWM1ZTRiMGU5YzRkYzYyYjNhMCIsImlhdCI6MTY3ODAxMjAwMH0.QK1X5Ow36e42iWqFbyGyeHqRMTHMVNWaBQK7D9HTcHw
+ */
+
+/**
+ * @swagger
  * /auth/signup:
  *  post:
  *    tags:
@@ -50,6 +101,10 @@ const router = express.Router();
  *    responses:
  *      201:
  *        description: User created successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/AuthResponse'
  *      400:
  *        description: Bad Request
  */
@@ -84,12 +139,7 @@ router.post("/signup", signupValidator, signup);
  *        content:
  *          application/json:
  *            schema:
- *              type: object
- *              properties:
- *                token:
- *                  type: string
- *                  description: JWT token
- *                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MWYyOWM1ZTRiMGU5YzRkYzYyYjNhMCIsImlhdCI6MTY3ODAxMjAwMH0.QK1X5Ow36e42iWqFbyGyeHqRMTHMVNWaBQK7D9HTcHw
+ *              $ref: '#/components/schemas/AuthResponse'
  *      401:
  *        description: Invalid credentials
  */

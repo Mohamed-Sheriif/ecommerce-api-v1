@@ -31,7 +31,7 @@ This is a comprehensive E-commerce API built with **Node.js**, **Express**, and 
 4. Start the server:
 
    ```sh
-   npm start
+   npm run start:prod
    ```
 
 ## Usage

@@ -26,7 +26,7 @@ This is a comprehensive E-commerce API built with **Node.js**, **Express**, and 
    npm install
    ```
 
-3. Create a `.env` file in the root directory and add your environment variables (see [Environment Variables](#environment-variables)).
+3. Create a `config.env` file in the root directory and add your environment variables (see [Environment Variables](#environment-variables)).
 
 4. Start the server:
 
@@ -176,7 +176,7 @@ The API uses **JWT (JSON Web Tokens)** for authentication and authorization. The
 
 ## Environment Variables
 
-Create a `.env` file in the root directory with the following variables:
+Create a `config.env` file in the root directory with the following variables:
 
 ```env
 PORT=8000

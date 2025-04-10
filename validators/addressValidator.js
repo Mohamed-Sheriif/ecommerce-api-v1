@@ -17,8 +17,7 @@ exports.addressValidator = [
     .notEmpty()
     .withMessage("Postal code is required")
     .isString()
-    .withMessage("Postal code must be a string")
-    .isPostalCode("any"),
+    .withMessage("Postal code must be a string"),
 
   validatorMiddleware,
 ];

@@ -103,11 +103,11 @@ const router = express.Router({ mergeParams: true });
  *        description: Subcategory created successfully
  *        content:
  *          application/json:
- *            example:
- *              id: 64af8f6e71c4e07e2c5e3d62
- *              name: Smartphones
- *              slug: smartphones
- *              category: 64af8f6e71c4e07e2c5e3d62
+ *            schema:
+ *              type: object
+ *              properties:
+ *                data:
+ *                  $ref: '#/components/schemas/SubCategory'
  *      400:
  *        description: Invalid input
  *      401:

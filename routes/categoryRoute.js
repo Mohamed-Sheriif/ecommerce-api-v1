@@ -114,6 +114,13 @@ router.use("/:categoryId/subCategories", subCategoryRoute);
  *    responses:
  *      201:
  *        description: Category created successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                data:
+ *                  $ref: '#/components/schemas/Category'
  *      400:
  *        description: Invalid input
  *      401:

@@ -56,6 +56,7 @@ exports.createCashOrder = asyncHandler(async (req, res, next) => {
   await Cart.findByIdAndDelete(req.params.cartId);
 
   res.status(201).json({
+    status: "success",
     data: order,
   });
 });

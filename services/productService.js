@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 const sharp = require("sharp");
 const { v4: uuidv4 } = require("uuid");
 
@@ -17,6 +19,12 @@ exports.resizeProductImages = async (req, res, next) => {
   if (req.files.imageCover) {
     const imageCoverFileName = `product-${uuidv4()}-${Date.now()}-cover.jpeg`;
 
+    // Check if folder exists, if not create it
+    const dir = "uploads/products";
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+
     await sharp(req.files.imageCover[0].buffer)
       .resize(2000, 1333)
       .toFormat("jpeg")
@@ -32,6 +40,12 @@ exports.resizeProductImages = async (req, res, next) => {
     await Promise.all(
       req.files.images.map(async (img, index) => {
         const imageName = `product-${uuidv4()}-${Date.now()}-${index + 1}.jpeg`;
+
+        // Check if folder exists, if not create it
+        const dir = "uploads/products";
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir, { recursive: true });
+        }
 
         await sharp(img.buffer)
           .resize(2000, 1333)

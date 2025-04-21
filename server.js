@@ -5,8 +5,6 @@ const swaggerJSDoc = require("swagger-jsdoc");
 const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
-const CSS_URL =
-  "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
 
 // Error handler
 const ApiError = require("./utils/apiError");
@@ -61,11 +59,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // Mount routes
-app.use(
-  "/api-docs",
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerDocs, { customCssUrl: CSS_URL })
-);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 mountRoutes(app);
 
 app.all("*", (req, res, next) => {

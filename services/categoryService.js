@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 const sharp = require("sharp");
 const { v4: uuidv4 } = require("uuid");
 const asyncHandler = require("express-async-handler");
@@ -12,6 +14,12 @@ exports.uploadCategoryImage = uploadSingleImage("image");
 // Image processing
 exports.resizeCategoryImage = asyncHandler(async (req, res, next) => {
   const fileName = `category-${uuidv4()}-${Date.now()}.jpeg`;
+
+  // Check if folder exists, if not create it
+  const dir = "uploads/categories";
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
 
   if (req.file) {
     await sharp(req.file.buffer)

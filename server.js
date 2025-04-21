@@ -51,11 +51,6 @@ const swaggerOptions = {
   apis: ["./routes/*.js"], // Path to your API docs
 };
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
-swaggerUi.setup(swaggerDocs, {
-  swaggerOptions: {
-    url: CSS_URL,
-  },
-});
 
 // Middleware
 app.use(express.json());
@@ -66,7 +61,11 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // Mount routes
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocs, { customCssUrl: CSS_URL })
+);
 mountRoutes(app);
 
 app.all("*", (req, res, next) => {

@@ -31,9 +31,16 @@ exports.addProductToWishlist = asyncHandler(async (req, res, next) => {
 exports.getLoggedUserWishlist = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user._id).populate("wishlist");
 
+  // remove unnecessary fields from the wishlist object
+  const wishlist = user.wishlist.map((product) => ({
+    _id: product._id,
+    title: product.title,
+    price: product.price,
+  }));
+
   res.status(200).json({
     result: user.wishlist.length,
-    data: user.wishlist,
+    data: wishlist,
   });
 });
 

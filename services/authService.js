@@ -217,7 +217,7 @@ exports.verifypassResetCode = asyncHandler(async (req, res, next) => {
  * @access  Public
  */
 exports.resetPassword = asyncHandler(async (req, res, next) => {
-  // 1) Get user based on reset code
+  // 1) Get user based on email
   const user = await User.findOne({
     email: req.body.email,
   });

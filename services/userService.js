@@ -153,7 +153,7 @@ exports.updateLoggedUserPassword = asyncHandler(async (req, res, next) => {
  * @access  Private
  */
 exports.updateMe = asyncHandler(async (req, res, next) => {
-  const updatedUse = await User.findByIdAndUpdate(
+  const updatedUser = await User.findByIdAndUpdate(
     req.user.id,
     {
       name: req.body.name,
@@ -165,7 +165,7 @@ exports.updateMe = asyncHandler(async (req, res, next) => {
     }
   );
 
-  res.status(200).json({ data: updatedUse });
+  res.status(200).json({ data: updatedUser });
 });
 
 /**

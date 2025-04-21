@@ -5,6 +5,8 @@ const swaggerJSDoc = require("swagger-jsdoc");
 const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
+const CSS_URL =
+  "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
 
 // Error handler
 const ApiError = require("./utils/apiError");
@@ -49,6 +51,11 @@ const swaggerOptions = {
   apis: ["./routes/*.js"], // Path to your API docs
 };
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
+swaggerUi.setup(swaggerDocs, {
+  swaggerOptions: {
+    url: CSS_URL,
+  },
+});
 
 // Middleware
 app.use(express.json());

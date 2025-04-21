@@ -101,6 +101,13 @@ const router = express.Router();
  *    responses:
  *      201:
  *        description: Brand created successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                data:
+ *                  $ref: '#/components/schemas/Brand'
  *      400:
  *        description: Invalid input
  *      401:

@@ -27,7 +27,7 @@
     "stripe": "^17.4.0",
     "swagger-cli": "^4.0.4",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1",
+    "swagger-ui-express": "^4.6.3",
     "uuid": "^9.0.0",
     "yamljs": "^0.3.0"
   },

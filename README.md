@@ -16,7 +16,7 @@ This is a comprehensive E-commerce API built with **Node.js**, **Express**, and 
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/your-username/ecommerce-api.git
+   git clone https://github.com/Mohamed-Sheriif/ecommerce-api.git
    cd ecommerce-api
    ```
 

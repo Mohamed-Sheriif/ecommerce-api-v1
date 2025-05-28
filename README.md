@@ -212,7 +212,7 @@ Create a `config.env` file in the root directory with the following variables:
 
 ```env
 PORT=8000
-NODE_ENV=development
+NODE_ENV=production
 DATABASE=mongodb+srv://<username>:<password>@cluster0.mongodb.net/ecommerce
 JWT_SECRET=your_jwt_secret
 JWT_EXPIRES_IN=90d

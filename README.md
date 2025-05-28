@@ -6,6 +6,7 @@ This is a comprehensive E-commerce API built with **Node.js**, **Express**, and 
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [E-commerce RESTful API Architecture Diagram](#E-commerce-RESTful-API-Architecture-Diagram)
 - [API Endpoints](#api-endpoints)
 - [Features](#features)
 - [Technologies Used](#technologies-used)
@@ -40,6 +41,12 @@ This is a comprehensive E-commerce API built with **Node.js**, **Express**, and 
 
 - The API will run on `http://localhost:8000` by default.
 - Use tools like **Postman** or **Insomnia** to interact with the API endpoints.
+
+## E-commerce RESTful API Architecture Diagram
+
+Here is an overview of API Architecture Diagram:
+
+![Database Diagram](./assets/E-commerce-RESTful-API-Architecture-Diagram.png)
 
 ## Features
 

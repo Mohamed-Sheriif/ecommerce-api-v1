@@ -7,6 +7,8 @@ This is a comprehensive E-commerce API built with **Node.js**, **Express**, and 
 - [Installation](#installation)
 - [Usage](#usage)
 - [API Endpoints](#api-endpoints)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
 - [Authentication and Authorization](#authentication-and-authorization)
 - [Environment Variables](#environment-variables)
 - [License](#license)
@@ -38,6 +40,36 @@ This is a comprehensive E-commerce API built with **Node.js**, **Express**, and 
 
 - The API will run on `http://localhost:8000` by default.
 - Use tools like **Postman** or **Insomnia** to interact with the API endpoints.
+
+## Features
+
+- User authentication and authorization (JWT)
+- Role-based access control (User, Manager, Admin)
+- Product, category, subcategory, and brand management
+- Shopping cart and wishlist functionality
+- Order creation, payment, and delivery tracking
+- Coupon and discount management
+- Product reviews and ratings
+- User address management
+- RESTful API design with clear error handling and validation
+- Comprehensive API documentation with Swagger
+- Environment-based configuration
+- Ready for deployment on Vercel
+
+## Technologies Used
+
+- **Node.js** & **Express** – Backend framework
+- **MongoDB** & **Mongoose** – Database and ODM
+- **JWT** – Authentication
+- **bcryptjs** – Password hashing
+- **Multer** – File uploads
+- **Sharp** – Image processing
+- **Stripe** – Payment integration
+- **Swagger** – API documentation
+- **dotenv** – Environment variable management
+- **Vercel** – Deployment
+- **Morgan** – HTTP request logging
+- **nodemailer** – Sending emails
 
 ## API Endpoints
 
